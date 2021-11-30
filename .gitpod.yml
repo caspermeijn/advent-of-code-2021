@@ -4,6 +4,7 @@
 
 tasks:
   - init: |
+      pip3 install --user reuse
       cargo build
     command: |
       cargo run
