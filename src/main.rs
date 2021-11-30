@@ -1,4 +1,3 @@
-
 /* Copyright (C) 2021 Casper Meijn <casper@meijn.net>
  * SPDX-License-Identifier: GPL-3.0-or-later
  *

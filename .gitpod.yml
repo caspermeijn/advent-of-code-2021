@@ -4,6 +4,7 @@
 
 tasks:
   - init: |
+      rustup component add clippy
       curl -sf https://gobinaries.com/aevea/commitsar@v0.17.0 | sh
       pip3 install --user reuse
       cargo build
