@@ -1,0 +1,9 @@
+tasks:
+  - init: |
+      cargo build
+    command: |
+      cargo run
+vscode:
+  extensions:
+    - vivaxy.vscode-conventional-commits
+    - matklad.rust-analyzer
