@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
- pub fn solve(lines: std::str::Lines) -> String {
+pub fn solve(lines: std::str::Lines) -> String {
     let numbers = lines.map(|line| line.parse::<u32>().unwrap());
     let mut count = 0;
     let mut previous_number = u32::MAX;
