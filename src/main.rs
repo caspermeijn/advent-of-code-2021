@@ -20,5 +20,7 @@ fn main() {
 
     let text = include_str!("day1/input-puzzle.txt");
     let result = advent_of_code_2021::day1::part1::solve(text.lines());
-    println!("Puzzle 1a: {}", result)
+    println!("Puzzle 1a: {}", result);
+    let result = advent_of_code_2021::day1::part2::solve(text.lines());
+    println!("Puzzle 1b: {}", result);
 }
