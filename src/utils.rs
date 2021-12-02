@@ -29,7 +29,7 @@ where
 {
     pub fn new(data: I) -> Self {
         let mut result = Self {
-            data: data,
+            data,
             window: [0; 3],
         };
         result.next();
