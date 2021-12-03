@@ -23,10 +23,10 @@ struct Number {
 
 impl Number {
     fn new(line: &str) -> Number {
-        let number = u32::from_str_radix(&line, 2).unwrap();
+        let number = u32::from_str_radix(line, 2).unwrap();
         Number {
             orig_number: number,
-            processed: number.reverse_bits() >> 32 - line.len(),
+            processed: number.reverse_bits() >> (32 - line.len()),
         }
     }
 
@@ -35,12 +35,12 @@ impl Number {
     }
 
     fn shift_out_one_bit(mut self) -> Self {
-        self.processed = self.processed >> 1;
+        self.processed >>= 1;
         self
     }
 }
 
-fn reduce_list_oxygen(list: &Vec<Number>) -> Vec<Number> {
+fn reduce_list_oxygen(list: &[Number]) -> Vec<Number> {
     let ones_count = list
         .iter()
         .filter(|number| number.get_current_bit() == 1)
@@ -60,7 +60,7 @@ fn reduce_list_oxygen(list: &Vec<Number>) -> Vec<Number> {
     new_list
 }
 
-fn find_oxygen_rating(numbers: &Vec<Number>) -> u32 {
+fn find_oxygen_rating(numbers: &[Number]) -> u32 {
     let mut list = reduce_list_oxygen(numbers);
     while list.len() > 1 {
         list = reduce_list_oxygen(&list);
@@ -68,7 +68,7 @@ fn find_oxygen_rating(numbers: &Vec<Number>) -> u32 {
     list[0].orig_number
 }
 
-fn reduce_list_co2(list: &Vec<Number>) -> Vec<Number> {
+fn reduce_list_co2(list: &[Number]) -> Vec<Number> {
     let zeros_count = list
         .iter()
         .filter(|number| number.get_current_bit() == 0)
@@ -84,7 +84,7 @@ fn reduce_list_co2(list: &Vec<Number>) -> Vec<Number> {
     new_list
 }
 
-fn find_co2_rating(numbers: &Vec<Number>) -> u32 {
+fn find_co2_rating(numbers: &[Number]) -> u32 {
     let mut list = reduce_list_co2(numbers);
     while list.len() > 1 {
         list = reduce_list_co2(&list);
