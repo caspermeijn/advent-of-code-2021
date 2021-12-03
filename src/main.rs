@@ -16,7 +16,7 @@
  */
 
 fn main() {
-    println!("Hello, world!");
+    println!("Advent of code 2021");
 
     let text = include_str!("day1/input-puzzle.txt");
     let result = advent_of_code_2021::day1::part1::solve(text.lines());
@@ -33,4 +33,6 @@ fn main() {
     let text = include_str!("day3/input-puzzle.txt");
     let result = advent_of_code_2021::day3::part1::solve(text.lines());
     println!("Puzzle 3a: {}", result);
+    let result = advent_of_code_2021::day3::part2::solve(text.lines());
+    println!("Puzzle 3b: {}", result);
 }
