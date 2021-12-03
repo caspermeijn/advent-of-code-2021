@@ -26,7 +26,7 @@ impl Number {
         let number = u32::from_str_radix(&line, 2).unwrap();
         Number {
             orig_number: number,
-            processed: number.reverse_bits() >> 32 -line.len(),
+            processed: number.reverse_bits() >> 32 - line.len(),
         }
     }
 
@@ -45,7 +45,11 @@ fn reduce_list_oxygen(list: &Vec<Number>) -> Vec<Number> {
         .iter()
         .filter(|number| number.get_current_bit() == 1)
         .count();
-    let most_common_bit = if ones_count < (list.len() + 1) / 2 { 0 } else { 1 };
+    let most_common_bit = if ones_count < (list.len() + 1) / 2 {
+        0
+    } else {
+        1
+    };
 
     let new_list = list
         .iter()
@@ -89,13 +93,11 @@ fn find_co2_rating(numbers: &Vec<Number>) -> u32 {
 }
 
 pub fn solve(lines: std::str::Lines) -> u32 {
-    let numbers: Vec<Number> = lines
-        .map(|line| Number::new(line))
-        .collect();
+    let numbers: Vec<Number> = lines.map(|line| Number::new(line)).collect();
 
-        let oxygen = find_oxygen_rating(&numbers);
+    let oxygen = find_oxygen_rating(&numbers);
 
-        let co2 = find_co2_rating(&numbers);
+    let co2 = find_co2_rating(&numbers);
 
     oxygen * co2
 }
