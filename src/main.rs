@@ -39,4 +39,6 @@ fn main() {
     let text = include_str!("day4/input-puzzle.txt");
     let result = advent_of_code_2021::day4::part1::solve(text);
     println!("Puzzle 4a: {}", result);
+    let result = advent_of_code_2021::day4::part2::solve(text);
+    println!("Puzzle 4b: {}", result);
 }

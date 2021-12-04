@@ -30,9 +30,18 @@ pub fn solve(text: &str) -> u32 {
     for number_drawn in numbers_drawn {
         for board in &mut boards {
             board.mark_number(number_drawn);
+        }
+
+        if boards.len() == 1 {
+            let board = &boards[0];
             if board.is_bingo() {
                 return number_drawn * board.remaining_total();
             }
+        } else {
+            boards = boards
+                .into_iter()
+                .filter(|board| !board.is_bingo())
+                .collect();
         }
     }
 
@@ -41,12 +50,12 @@ pub fn solve(text: &str) -> u32 {
 
 #[cfg(test)]
 mod tests {
-    use crate::day4::part1::solve;
+    use crate::day4::part2::solve;
 
     #[test]
     fn example() {
         let text = include_str!("input-example.txt");
         let result = solve(text);
-        assert_eq!(result, 4512)
+        assert_eq!(result, 1924)
     }
 }
