@@ -15,9 +15,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-pub mod day1;
-pub mod day2;
-pub mod day3;
-pub mod day4;
-pub mod day5;
-mod utils;
+pub mod part1;
