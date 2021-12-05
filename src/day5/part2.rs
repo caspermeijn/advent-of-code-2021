@@ -19,9 +19,7 @@ use crate::day5::utils::Line;
 use array2d::Array2D;
 
 pub fn solve(lines: std::str::Lines) -> usize {
-    let lines = lines
-        .map(Line::parse)
-        .filter(Line::is_horizonal_or_vertical);
+    let lines = lines.map(Line::parse);
 
     let points = lines.flat_map(|line| line.points());
 
@@ -38,19 +36,12 @@ pub fn solve(lines: std::str::Lines) -> usize {
 
 #[cfg(test)]
 mod tests {
-    use crate::day5::part1::solve;
+    use crate::day5::part2::solve;
 
     #[test]
     fn example() {
         let text = include_str!("input-example.txt");
         let result = solve(text.lines());
-        assert_eq!(result, 5)
-    }
-
-    #[test]
-    fn puzzle() {
-        let text = include_str!("input-puzzle.txt");
-        let result = solve(text.lines());
-        assert_eq!(result, 5690)
+        assert_eq!(result, 12)
     }
 }
