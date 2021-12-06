@@ -15,10 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-pub mod day1;
-pub mod day2;
-pub mod day3;
-pub mod day4;
-pub mod day5;
-pub mod day6;
-mod utils;
+use crate::day6::utils::Population;
+
+pub fn solve(lines: std::str::Lines) -> usize {
+    let mut population = Population::parse(lines);
+
+    population.age(256);
+
+    population.total()
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::day6::part2::solve;
+
+    #[test]
+    fn example() {
+        let text = include_str!("input-example.txt");
+        let result = solve(text.lines());
+        assert_eq!(result, 26984457539)
+    }
+}
