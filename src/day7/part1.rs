@@ -15,21 +15,58 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::day7::utils::Aligment;
+pub const fn abs_diff(one: usize, other: usize) -> usize {
+    if one < other {
+        other.wrapping_sub(one)
+    } else {
+        one.wrapping_sub(other)
+    }
+}
+
+pub struct Aligment {
+    alignments: Vec<usize>,
+}
+
+impl Aligment {
+    pub fn parse(text: &str) -> Self {
+        Self {
+            alignments: text.split(',').map(|n| n.parse().unwrap()).collect(),
+        }
+    }
+
+    pub fn total_costs(&self, new_course: usize) -> usize {
+        self.alignments
+            .iter()
+            .map(|&old_course| abs_diff(old_course, new_course))
+            .sum()
+    }
+}
 
 pub fn solve(mut lines: std::str::Lines) -> usize {
     let alignment = Aligment::parse(lines.next().unwrap());
 
     let best_course = (0..1000)
-        .min_by_key(|&new_course| alignment.costs(new_course))
+        .min_by_key(|&new_course| alignment.total_costs(new_course))
         .unwrap();
 
-    alignment.costs(best_course)
+    alignment.total_costs(best_course)
 }
 
 #[cfg(test)]
 mod tests {
     use crate::day7::part1::solve;
+    use crate::day7::part1::Aligment;
+
+    #[test]
+    fn example_alignment() {
+        let text = include_str!("input-example.txt");
+        let alignment = Aligment::parse(text);
+        assert_eq!(alignment.total_costs(2), 37);
+        assert_eq!(alignment.total_costs(1), 41);
+        assert_eq!(alignment.total_costs(3), 39);
+        assert_eq!(alignment.total_costs(10), 71);
+    }
+
 
     #[test]
     fn example() {

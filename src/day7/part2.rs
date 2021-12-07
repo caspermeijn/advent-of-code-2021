@@ -34,25 +34,63 @@ impl Aligment {
         }
     }
 
-    pub fn costs(&self, new_course: usize) -> usize {
+    pub const fn costs(course_change: usize) -> usize {
+        match course_change {
+            0 => 0,
+            1 => 1,
+            n => n + Self::costs(n - 1)
+        }
+    }
+
+    pub fn total_costs(&self, new_course: usize) -> usize {
         self.alignments
             .iter()
-            .map(|&old_course| abs_diff(old_course, new_course))
+            .map(|&old_course| Self::costs(abs_diff(old_course, new_course)))
             .sum()
     }
 }
 
+pub fn solve(mut lines: std::str::Lines) -> usize {
+    let alignment = Aligment::parse(lines.next().unwrap());
+
+    let best_course = (0..1000)
+        .min_by_key(|&new_course| alignment.total_costs(new_course))
+        .unwrap();
+
+    alignment.total_costs(best_course)
+}
+
 #[cfg(test)]
 mod tests {
-    use crate::day7::utils::Aligment;
+    use crate::day7::part2::solve;
+    use crate::day7::part2::Aligment;
+
+    #[test]
+    fn example_costs() {
+        assert_eq!(Aligment::costs(16-5), 66);
+        assert_eq!(Aligment::costs(5-1), 10);
+    }
+
+    #[test]
+    fn example_alignment() {
+        let text = include_str!("input-example.txt");
+        let alignment = Aligment::parse(text);
+        assert_eq!(alignment.total_costs(2), 206);
+        assert_eq!(alignment.total_costs(5), 168);
+    }
+
 
     #[test]
     fn example() {
         let text = include_str!("input-example.txt");
-        let alignment = Aligment::parse(text);
-        assert_eq!(alignment.costs(2), 37);
-        assert_eq!(alignment.costs(1), 41);
-        assert_eq!(alignment.costs(3), 39);
-        assert_eq!(alignment.costs(10), 71);
+        let result = solve(text.lines());
+        assert_eq!(result, 168)
+    }
+
+    #[test]
+    fn puzzle() {
+        let text = include_str!("input-puzzle.txt");
+        let result = solve(text.lines());
+        assert_eq!(result, 98363777)
     }
 }
