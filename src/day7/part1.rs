@@ -15,11 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-pub mod day1;
-pub mod day2;
-pub mod day3;
-pub mod day4;
-pub mod day5;
-pub mod day6;
-pub mod day7;
-mod utils;
+use crate::day7::utils::Aligment;
+
+pub fn solve(mut lines: std::str::Lines) -> usize {
+    let alignment = Aligment::parse(lines.next().unwrap());
+
+    let best_course = (0..1000)
+        .min_by_key(|&new_course| alignment.costs(new_course))
+        .unwrap();
+
+    alignment.costs(best_course)
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::day7::part1::solve;
+
+    #[test]
+    fn example() {
+        let text = include_str!("input-example.txt");
+        let result = solve(text.lines());
+        assert_eq!(result, 37)
+    }
+}

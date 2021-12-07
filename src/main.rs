@@ -53,4 +53,8 @@ fn main() {
     println!("Puzzle 6a: {}", result);
     let result = advent_of_code_2021::day6::part2::solve(text.lines());
     println!("Puzzle 6b: {}", result);
+
+    let text = include_str!("day7/input-puzzle.txt");
+    let result = advent_of_code_2021::day7::part1::solve(text.lines());
+    println!("Puzzle 7a: {}", result);
 }
