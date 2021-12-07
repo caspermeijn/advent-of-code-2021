@@ -7,7 +7,13 @@ name = "advent-of-code-2021"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+# Optimize the dev build the same as release builds
+[profile.dev]
+opt-level = 3
+
+# Optimize the test build the same as release builds
+[profile.test]
+opt-level = 3
 
 [dependencies]
 array2d = "0.2"

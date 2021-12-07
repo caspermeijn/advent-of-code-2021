@@ -34,11 +34,11 @@ impl Aligment {
         }
     }
 
-    pub const fn costs(course_change: usize) -> usize {
+    pub fn costs(course_change: usize) -> usize {
         match course_change {
             0 => 0,
             1 => 1,
-            n => n + Self::costs(n - 1)
+            n => (0..n + 1).sum(),
         }
     }
 
@@ -67,8 +67,8 @@ mod tests {
 
     #[test]
     fn example_costs() {
-        assert_eq!(Aligment::costs(16-5), 66);
-        assert_eq!(Aligment::costs(5-1), 10);
+        assert_eq!(Aligment::costs(16 - 5), 66);
+        assert_eq!(Aligment::costs(5 - 1), 10);
     }
 
     #[test]
@@ -78,7 +78,6 @@ mod tests {
         assert_eq!(alignment.total_costs(2), 206);
         assert_eq!(alignment.total_costs(5), 168);
     }
-
 
     #[test]
     fn example() {

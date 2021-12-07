@@ -67,7 +67,6 @@ mod tests {
         assert_eq!(alignment.total_costs(10), 71);
     }
 
-
     #[test]
     fn example() {
         let text = include_str!("input-example.txt");
