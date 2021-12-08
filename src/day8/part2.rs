@@ -15,87 +15,65 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-fn get_digit_by_unique_len(signal_patterns: &Vec<String>, len: usize) -> String {
+fn get_digit_by_unique_len(signal_patterns: &[String], len: usize) -> String {
     signal_patterns
         .iter()
-        .filter(|s| s.len() == len)
-        .next()
+        .find(|s| s.len() == len)
         .unwrap()
         .clone()
 }
 
 fn get_digit_must_contain(
-    signal_patterns: &Vec<String>,
+    signal_patterns: &[String],
     must_contain: String,
     exact_len: usize,
 ) -> String {
     signal_patterns
         .iter()
         .filter(|s| s.len() == exact_len)
-        .filter(|s| must_contain.chars().all(|c1| s.chars().any(|c2| c1 == c2)))
-        .next()
+        .find(|s| must_contain.chars().all(|c1| s.chars().any(|c2| c1 == c2)))
         .unwrap()
         .clone()
 }
 
-fn get_digit_must_miss(
-    signal_patterns: &Vec<String>,
-    must_miss: &String,
-    exact_len: usize,
-) -> String {
+fn get_digit_must_miss(signal_patterns: &[String], must_miss: &str, exact_len: usize) -> String {
     signal_patterns
         .iter()
         .filter(|s| s.len() == exact_len)
-        .filter(|s| must_miss.chars().any(|c1| s.chars().all(|c2| c1 != c2)))
-        .next()
+        .find(|s| must_miss.chars().any(|c1| s.chars().all(|c2| c1 != c2)))
         .unwrap()
         .clone()
 }
 
-fn get_digit_fits_in(signal_patterns: &Vec<String>, fits_in: &String, exact_len: usize) -> String {
+fn get_digit_fits_in(signal_patterns: &[String], fits_in: &str, exact_len: usize) -> String {
     signal_patterns
         .iter()
         .filter(|s| s.len() == exact_len)
-        .filter(|s| s.chars().all(|c1| fits_in.chars().any(|c2| c1 == c2)))
-        .next()
+        .find(|s| s.chars().all(|c1| fits_in.chars().any(|c2| c1 == c2)))
         .unwrap()
         .clone()
 }
 
 fn get_digit_fits_in_exclude(
-    signal_patterns: &Vec<String>,
-    fits_in: &String,
-    exclude: &String,
+    signal_patterns: &[String],
+    fits_in: &str,
+    exclude: &str,
     exact_len: usize,
 ) -> String {
     signal_patterns
         .iter()
         .filter(|s| s.len() == exact_len)
         .filter(|&s| s != exclude)
-        .filter(|s| s.chars().all(|c1| fits_in.chars().any(|c2| c1 == c2)))
-        .next()
+        .find(|s| s.chars().all(|c1| fits_in.chars().any(|c2| c1 == c2)))
         .unwrap()
         .clone()
 }
 
-fn get_unique_signal(does_contain: &String, does_not_contain: &String) -> char {
-    does_contain
-        .chars()
-        .filter(|&c1| !does_not_contain.chars().any(|c2| c1 == c2))
-        .next()
-        .unwrap()
-}
-
-fn get_digit_is_not(
-    signal_patterns: &Vec<String>,
-    is_not: &Vec<&String>,
-    exact_len: usize,
-) -> String {
+fn get_digit_is_not(signal_patterns: &[String], is_not: &[&String], exact_len: usize) -> String {
     signal_patterns
         .iter()
         .filter(|s| s.len() == exact_len)
-        .filter(|s1| is_not.iter().all(|s2| s1 != s2))
-        .next()
+        .find(|s1| is_not.iter().all(|s2| s1 != s2))
         .unwrap()
         .clone()
 }
@@ -104,20 +82,19 @@ fn match_digit(digits: &[String; 10], pattern: &str) -> usize {
     digits
         .iter()
         .enumerate()
-        .filter(|(i, s)| s.len() == pattern.len())
-        .filter(|(i, s)| s.chars().all(|c1| pattern.chars().any(|c2| c1 == c2)))
-        .next()
+        .filter(|(_i, s)| s.len() == pattern.len())
+        .find(|(_i, s)| s.chars().all(|c1| pattern.chars().any(|c2| c1 == c2)))
         .unwrap()
         .0
 }
 
-fn concat(s1: &String, s2: &String) -> String {
-    s1.clone() + &s2
+fn concat(s1: &str, s2: &str) -> String {
+    s1.to_string() + s2
 }
 
 #[derive(Default)]
 struct SevenSegment {
-    digits: [String; 10],
+    _digits: [String; 10],
     number: usize,
 }
 
@@ -137,19 +114,22 @@ impl SevenSegment {
 
         digits[9] = get_digit_must_contain(&signal_patterns, concat(&digits[4], &digits[7]), 6);
         digits[6] = get_digit_must_miss(&signal_patterns, &digits[1], 6);
-        digits[0] = get_digit_is_not(&signal_patterns, &vec![&digits[9], &digits[6]], 6);
+        digits[0] = get_digit_is_not(&signal_patterns, &[&digits[9], &digits[6]], 6);
 
         digits[5] = get_digit_fits_in(&signal_patterns, &digits[6], 5);
         digits[3] = get_digit_fits_in_exclude(&signal_patterns, &digits[9], &digits[5], 5);
-        digits[2] = get_digit_is_not(&signal_patterns, &vec![&digits[5], &digits[3]], 5);
+        digits[2] = get_digit_is_not(&signal_patterns, &[&digits[5], &digits[3]], 5);
 
         let digit_patterns: Vec<&str> = digit_patterns.split_whitespace().collect();
         let number = match_digit(&digits, digit_patterns[0]) * 1000
             + match_digit(&digits, digit_patterns[1]) * 100
             + match_digit(&digits, digit_patterns[2]) * 10
-            + match_digit(&digits, digit_patterns[3]) * 1;
+            + match_digit(&digits, digit_patterns[3]);
 
-        SevenSegment { digits, number }
+        SevenSegment {
+            _digits: digits,
+            number,
+        }
     }
 }
 
@@ -172,16 +152,16 @@ mod tests {
             "acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf";
         let result = SevenSegment::parse(text);
 
-        assert_eq!(result.digits[1], "ab");
-        assert_eq!(result.digits[4], "eafb");
-        assert_eq!(result.digits[7], "dab");
-        assert_eq!(result.digits[8], "acedgfb");
-        assert_eq!(result.digits[9], "cefabd");
-        assert_eq!(result.digits[6], "cdfgeb");
-        assert_eq!(result.digits[0], "cagedb");
-        assert_eq!(result.digits[5], "cdfbe");
-        assert_eq!(result.digits[2], "gcdfa");
-        assert_eq!(result.digits[3], "fbcad");
+        assert_eq!(result._digits[1], "ab");
+        assert_eq!(result._digits[4], "eafb");
+        assert_eq!(result._digits[7], "dab");
+        assert_eq!(result._digits[8], "acedgfb");
+        assert_eq!(result._digits[9], "cefabd");
+        assert_eq!(result._digits[6], "cdfgeb");
+        assert_eq!(result._digits[0], "cagedb");
+        assert_eq!(result._digits[5], "cdfbe");
+        assert_eq!(result._digits[2], "gcdfa");
+        assert_eq!(result._digits[3], "fbcad");
         assert_eq!(result.number, 5353);
     }
 
